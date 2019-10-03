@@ -3,8 +3,8 @@ group of data structures, algorithms and techniques used for competitive program
 
 ### Contributing Guidelines
 - The repository is structured language-wise i.e. algorithms in a certain language go in a specific folder.
-- The naming convention to be followed are ```algo_name.language_extention``` , ```ds_name.language_extention``` or ```tech_name.language_extention```
--The overall path should be ```language/algo_name.language_extention```
+- The naming convention to be followed are ```algo_name.language_extention``` , ```ds_name.language_extention``` or ```tech_name.language_extention```.
+- The overall path should be
     - ```language/algo/algo_name.language_extention```
     - ```language/ds/ds_name.language_extention```
     - ```language/tech/tech_name.language_extention```
