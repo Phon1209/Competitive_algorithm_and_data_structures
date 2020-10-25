@@ -9,7 +9,7 @@ int main()
     int n,s,t,m;
     printf("number of nodes : ");
     scanf("%d",&n);
-    printf("number of edge : ");
+    printf("number of edges : ");
     scanf("%d",&m);
     while(m--)
     {
@@ -30,7 +30,6 @@ int main()
         for(int i=0;i<v[now].size();i++)
         {
             int nxt=v[now][i];
-            if(deg[nxt]==0) continue;
             deg[nxt]--;
             if(deg[nxt]==0)
                 q.push(nxt);
