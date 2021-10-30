@@ -10,31 +10,45 @@
         Query : O(1) per 1 query
     Space Complexity : O(N)
 */
-int quickSum[N];
+// Change this to match your data
+template <class T>
+struct Data
+{
+    T value;
+
+    void operator+(const Data<T> &other)
+    {
+        value += other.value;
+    }
+};
+
+template <class T>
+void computeQuickSum(T *quickSum, T *data, int n)
+{
+    quickSum[1] = data[1];
+}
+
 int main()
 {
-    int numInput,numQuery;
-    int firstIndex,lastIndex;
-    scanf("%d",&numInput);
-    for(int it = 1;it <= numInput;it++)
+    int numInput, numQuery;
+    int firstIndex, lastIndex;
+    int data[N];
+    int quickSum[N];
+    scanf("%d", &numInput);
+    for (int it = 1; it <= numInput; it++)
     {
-        scanf("%d",&quickSum[it]);
+        scanf("%d", &data[it]);
     }
 
-    // Process quickSum array
-    for(int it = 1;it <= numInput;it++)
-    {
-        // sum of element it and all elements before it
-        quickSum[it] += quickSum[it-1];
-    }
+    computeQuickSum(quickSum, data, numInput);
 
-    scanf("%d",&numQuery);
-    for(int it = 1;it <= numQuery;it++)
+    scanf("%d", &numQuery);
+    for (int it = 1; it <= numQuery; it++)
     {
         // Find sum between this index
-        scanf("%d %d",&firstIndex,&lastIndex);
+        scanf("%d %d", &firstIndex, &lastIndex);
 
         // Sum of element i to element j = Sum of element 1 to element j - Sum of element 1 to element (i-1) = quickSum[j] - quickSum[i-1]
-        printf("%d\n",quickSum[lastIndex]-quickSum[firstIndex-1]);
+        printf("%d\n", quickSum[lastIndex] - quickSum[firstIndex - 1]);
     }
 }
