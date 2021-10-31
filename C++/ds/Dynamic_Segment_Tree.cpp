@@ -6,85 +6,103 @@ type 2 : find sum of all elements in vector with value in [left,right]
 Time Complexity     O(log(bound(A))) per update/query
 */
 
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
-class Node
-{
-    public:
-    long long val;
-    Node *l,*r;
-    int start,end;
-    Node(long long val,int start,int end)
-    {
-        this->val=val;
-        this->start=start;
-        this->end=end;
-        this->l=NULL;
-        this->r=NULL;
-    }
-    void calculate()
-    {
-        val=0;
-        if(this->l!=NULL)
-        val+=l->val;
-        if(this->r!=NULL)
-        val+=r->val;
-    }
-};
+
+template <class T>
 class DynamicSegmentTree
 {
-    public:
-    Node *root=new Node(0,1,2e9);
-    void update(Node *cur,int position)
+
+private:
+    class Node
     {
-        if(cur->start==cur->end)
+    public:
+        T value;
+        Node *l, *r;
+        int start, end;
+        Node(int start, int end, T val = T()) : value(val), l(nullptr), r(nullptr), start(start), end(end) {}
+        void calculate()
         {
-            cur->val+=position;
+            value = (l) ? l->value : T();
+            if (r)
+                value += r->value;
+        }
+    };
+
+    // Modifiers
+    void update(Node *cur, int position, T value)
+    {
+        if (cur->start == cur->end)
+        {
+            cur->value += value;
             return;
         }
-        int mid=(cur->start+cur->end)/2;
-        if(mid>=position)
+        int mid = (cur->start + cur->end) / 2;
+        if (mid >= position)
         {
-            if(cur->l==NULL)
-            cur->l=new Node(0,cur->start,mid);
-            update(cur->l,position);
+            if (!cur->l)
+                cur->l = new Node(cur->start, mid, 0);
+            update(cur->l, position, value);
         }
         else
         {
-            if(cur->r==NULL)
-            cur->r=new Node(0,mid+1,cur->end);
-            update(cur->r,position);
+            if (!cur->r)
+                cur->r = new Node(mid + 1, cur->end, 0);
+            update(cur->r, position, value);
         }
         cur->calculate();
     }
-    long long query(Node *cur,int left,int right)
+
+    T query(Node *cur, int left, int right)
     {
-        if(cur==NULL || cur->start>right || cur->end<left)
-        return 0;
-        if(cur->start>=left && cur->end<=right)
-        return cur->val;
-        int mid=(cur->start+cur->end)/2;
-        return query(cur->l,left,right)+query(cur->r,left,right);
+        if (cur == NULL || cur->start > right || cur->end < left)
+            return T();
+        if (cur->start >= left && cur->end <= right)
+            return cur->value;
+        return query(cur->l, left, right) + query(cur->r, left, right);
+    }
+
+    // Typedefs
+    typedef Node *node;
+
+    // Representation
+    Node *root;
+
+public:
+    // Constructors
+    DynamicSegmentTree(int min, int max)
+    {
+        root = new Node(min, max);
+    }
+
+    // Modifiers
+    void update(int position, T value)
+    {
+        update(root, position, value);
+    }
+    T query(int left, int right)
+    {
+        return query(root, left, right);
     }
 };
 main()
 {
-	int numQuery;
-    DynamicSegmentTree tree;
-    scanf("%d",&numQuery);
-    int type,number,left,right;
-    for(int i = 1;i <= numQuery;i++)
+    int numQuery;
+    DynamicSegmentTree<long long> tree(0, 2e9);
+    scanf("%d", &numQuery);
+    int type, number, left, right;
+    for (int i = 1; i <= numQuery; i++)
     {
-        scanf("%d",&type);
-        if(type==1)
+        scanf("%d", &type);
+        if (type == 1)
         {
-            scanf("%d",&number);
-            tree.update(tree.root,number);
+            scanf("%d", &number);
+            tree.update(number, 1);
         }
         else
         {
-            scanf("%d%d",&left,&right);
-            printf("%lld\n",tree.query(tree.root,left,right));
+            scanf("%d%d", &left, &right);
+            cout << tree.query(left, right) << endl;
         }
     }
 }

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdio.h>
+#include <time.h>
 
 template <class T>
 class Treap
@@ -65,13 +66,29 @@ private:
             merge(r->l, l, r->l), t = r;
         t->upt_cnt();
     }
+    const T &get(node current, int position)
+    {
+        int leftSubtree = 0;
+        if (current->l)
+            leftSubtree = current->l->cnt();
+
+        if (position == leftSubtree)
+            return current->key;
+        if (position <= leftSubtree)
+            return get(current->l, position);
+        return get(current->r, position - leftSubtree);
+    }
 
     // Representation
     node root;
+    int size;
 
 public:
     // Constructor
-    Treap() : root(nullptr) {}
+    Treap() : root(nullptr), size(0)
+    {
+        srand(time(0));
+    }
 
     // Print
     void print() const { print(root); }
@@ -80,15 +97,28 @@ public:
     void split(int numNode, Treap &other)
     {
         split(root, numNode, getRoot(), other.getRoot());
+        other.size = size - numNode;
+        size = numNode;
     }
     void merge(Treap &other)
     {
         merge(root, getRoot(), other.getRoot());
+        size += other.size;
+        other.getRoot() = nullptr;
     }
     void push_back(T value)
     {
-        srand(time(0));
         int randomKey = rand() % 1000;
         merge(root, root, new Node(randomKey, value));
+        ++size;
+    }
+    const T &get(int position)
+    {
+        if (position >= size)
+        {
+            std::cerr << "Index out of bound\nTry to call " << position << "\nThis treap has only " << size << " elements" << std::endl;
+            exit(0);
+        }
+        return get(root, position);
     }
 };
