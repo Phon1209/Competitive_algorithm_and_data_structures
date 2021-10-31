@@ -1,70 +1,63 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
-vector<pair<char,string> > ans;
+vector<pair<char, string>> ans;
 struct Node
 {
-    Node *l,*r;
+    Node *l, *r;
     char val;
-    Node(char v)
-    {
-        val=v;
-        l=nullptr;
-        r=nullptr;
-    }
-    Node(Node* left,Node* right)
-    {
-        l=left;
-        r=right;
-    }
+    Node(char v) : val(v), l(nullptr), r(nullptr) {}
+    Node(Node *left, Node *right) : l(left), r(right) {}
 };
-void dfs(Node* now,string huff)
+void dfs(Node *now, string huff)
 {
-    if(now->l==nullptr)
+    if (now->l == nullptr)
     {
-        ans.push_back({now->val,huff});
-        return ;
+        ans.push_back({now->val, huff});
+        return;
     }
-    dfs(now->l,huff+'0');
-    dfs(now->r,huff+'1');
+    dfs(now->l, huff + '0');
+    dfs(now->r, huff + '1');
 }
-priority_queue<pair<int,Node*> > pq;
 
 int main()
 {
-    int n,num;
+    priority_queue<pair<int, Node *>> pq;
+    int n, num;
     char ch;
     printf("number of symbol : ");
-    scanf("%d",&n);
-    for(int i=0;i<n;i++)
+    scanf("%d", &n);
+    for (int i = 0; i < n; i++)
     {
         printf("\nsymbol  frequency : ");
-        cin>>ch>>num;
-        pq.push({-num,new Node(ch)});
+        cin >> ch >> num;
+        pq.push({-num, new Node(ch)});
     }
-    Node* ch1,*ch2;
-    int n1,n2;
-    while(pq.size()!=1)
+    Node *node1, *node2;
+    int freq1, freq2;
+    // Merge two most that has least frequency to be one
+    //
+    while (pq.size() != 1)
     {
-        ch1=pq.top().second;
-        n1=pq.top().first;
+        node1 = pq.top().second;
+        freq1 = pq.top().first;
         pq.pop();
 
-        ch2=pq.top().second;
-        n2=pq.top().first;
+        node2 = pq.top().second;
+        freq2 = pq.top().first;
         pq.pop();
 
-        pq.push({n1+n2,new Node(ch1,ch2)});
+        pq.push({freq1 + freq2, new Node(node1, node2)});
     }
 
-    Node* root=pq.top().second;
+    Node *root = pq.top().second;
     pq.pop();
 
     // dfs to leave of binary tree
-    dfs(root,"");
+    dfs(root, "");
 
-    sort(ans.begin(),ans.end());
-    for(int i=0;i<ans.size();i++)
+    sort(ans.begin(), ans.end());
+    for (int i = 0; i < ans.size(); i++)
     {
-        printf("%c %s\n",ans[i].first,ans[i].second.c_str());
+        printf("%c %s\n", ans[i].first, ans[i].second.c_str());
     }
 }

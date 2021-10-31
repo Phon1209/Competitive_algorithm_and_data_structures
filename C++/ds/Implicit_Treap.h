@@ -85,7 +85,7 @@ public:
     {
         merge(root, getRoot(), other.getRoot());
     }
-    void insert(T value)
+    void push_back(T value)
     {
         srand(time(0));
         int randomKey = rand() % 1000;
