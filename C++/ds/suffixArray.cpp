@@ -1,3 +1,15 @@
+/*
+Input
+First line -> A length of string
+Second line -> A string
+Output
+Print N line. Each line represent if you start form word form position 'ans'
+to position N, You will get i'th word when sort lexicographically
+
+    Time Complexity : O(nlog^2(n))
+    Space Complexity : O(nlog(n))
+
+*/
 #include<bits/stdc++.h>
 using namespace std;
 char str[100005];
@@ -42,15 +54,3 @@ main()
         printf("%d\n",suffixCheck[i].second);
     }
 }
-/*
-Input
-First line -> A length of string
-Second line -> A string
-Output
-Print N line. Each line represent if you start form word form position 'ans'
-to position N, You will get i'th word when sort lexicographically
-
-    Time Complexity : O(nlog^2(n))
-    Space Complexity : O(nlog(n))
-
-*/
